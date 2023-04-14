@@ -1,1 +1,1 @@
-ulat (miro-lat)
+ulat (micro-lat)
