@@ -1,0 +1,11 @@
+---
+target: debian-11-minimal.tar.gz
+rootfs:
+  suite: bookworm
+  mirror: http://ftp.ca.debian.org/debian
+  packages:
+    - python3
+  dpkgOpt:
+    - force-unsafe-io
+  components:
+    - main

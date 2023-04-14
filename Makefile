@@ -20,7 +20,6 @@ check: default
 container-dev:
 	rm -rf artifacts
 	mkdir -p artifacts
-	git clone https://github.com/zulcss/apt-ostree-config artifacts/config
 	docker build -t ulat .
 	docker run -i -t --privileged --network host -v $(PWD):/workspace -v $(PWD)/artifacts:/artifacts ulat
 
