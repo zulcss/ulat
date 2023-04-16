@@ -1,4 +1,6 @@
-.PHONY: default clean check container-dev update-gomod
+.PHONY: all default clean check container-dev update-gomod
+
+all: clean default
 
 default:
 	gofmt -s -w .
