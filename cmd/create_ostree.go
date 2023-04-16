@@ -25,6 +25,8 @@ var createOstree = &cobra.Command{
 			log.Printf("Workspace not configured, using default workspace: %s", Workspace)
 		}
 		c := compose.NewComposeContext(ConfigFile, Workspace, Verbose)
+		c.Config = compose.LoadConfig(c)
+
 		c.CreateOstree()
 	},
 }
