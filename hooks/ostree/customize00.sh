@@ -44,3 +44,7 @@ fi
 mkdir -p boot/loader.0
 mkdir -p boot/loader.1
 ln -sf boot/loader.0 boot/loader
+
+# Cleanup kernel
+rm -f *.old vmlinuz*
+
