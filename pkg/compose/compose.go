@@ -29,3 +29,11 @@ func (c *Compose) Bootstrap() error {
 	}
 	return nil
 }
+
+func (c *Compose) CreateOstree() error {
+	err := OstreeCreate(c)
+	if err != nil {
+		return fmt.Errorf("Ostree creation failed: %v", err)
+	}
+	return nil
+}
