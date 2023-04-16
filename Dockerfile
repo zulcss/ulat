@@ -11,4 +11,5 @@ RUN apt-get update -y && \
 		       vim 
 ADD hooks/ostree /usr/share/mmdebstrap/hooks/ostree
 RUN mkdir -p /workspace /artifacts
+RUN export PATH="$PATH:/worspace/bin"
 WORKDIR /artifacts
