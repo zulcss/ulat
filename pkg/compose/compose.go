@@ -10,13 +10,15 @@ type Compose struct {
 	Target     string
 	Workspace  string
 	Config     ComposeConfig
+	Verbose    bool
 }
 
-func NewComposeContext(config string, workspace string) *Compose {
+func NewComposeContext(config string, workspace string, verbose bool) *Compose {
 	return &Compose{
 		ConfigFile: config,
 		Workspace:  workspace,
 		Format:     "tar",
+		Verbose:    verbose,
 	}
 }
 

@@ -32,7 +32,7 @@ type ComposeConfig struct {
 	// Execute arbitrary commands after the chroot is setup and all the packages are installed
 	CustomizeHook []string
 	// Ensure scripts in directory with filenames starting with "setup", "extract", "essential", or "customize"
-	HookDirectory string
+	HookDirectory []string
 	// OStree Repo
 	Repo string
 	// Ostree archive type
@@ -65,7 +65,7 @@ func LoadConfig(c *Compose) ComposeConfig {
 		ExtractHook:   viper.GetStringSlice("rootfs.extract-hook"),
 		EssentialHook: viper.GetStringSlice("rootfs.essential-hook"),
 		CustomizeHook: viper.GetStringSlice("rootfs.customize-hook"),
-		HookDirectory: viper.GetString("rootfs.hook-directory"),
+		HookDirectory: viper.GetStringSlice("rootfs.hook-directory"),
 
 		// Ostree
 		Repo:   viper.GetString("ostree.repo"),

@@ -1,11 +1,12 @@
 package cmd
 
 import (
+	"log"
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/zulcss/ulat/pkg/compose"
 	"github.com/zulcss/ulat/pkg/constants"
-	"log"
-	"os"
 )
 
 var createRootfs = &cobra.Command{
@@ -26,7 +27,7 @@ var createRootfs = &cobra.Command{
 			log.Printf("Workspace not configured, using default workspace: %s", Workspace)
 		}
 
-		c := compose.NewComposeContext(ConfigFile, Workspace)
+		c := compose.NewComposeContext(ConfigFile, Workspace, Verbose)
 		cfg := compose.LoadConfig(c)
 
 		c.Config = cfg

@@ -39,6 +39,10 @@ func BootstrapDebian(c *Compose) error {
 		b.Opts = append(b.Opts, fmt.Sprintf("--variant=%s", c.Config.Variant))
 	}
 
+	if c.Verbose {
+		b.Opts = append(b.Opts, "--verbose")
+	}
+
 	b.Opts = append(b.Opts, fmt.Sprintf("--format=%s", c.Format))
 
 	// Add additional packages
@@ -91,13 +95,15 @@ func BootstrapDebian(c *Compose) error {
 	// Add customize-hook
 	if len(c.Config.CustomizeHook) != 0 {
 		for _, customizeHook := range c.Config.CustomizeHook {
-			b.Opts = append(b.Opts, "--extract-hook", customizeHook)
+			b.Opts = append(b.Opts, "--customize-hook", customizeHook)
 		}
 	}
 
 	// Add hook-directory
-	if c.Config.HookDirectory != "" {
-		b.Opts = append(b.Opts, "--hook-directory", c.Config.HookDirectory)
+	if len(c.Config.HookDirectory) != 0 {
+		for _, HookDirectory := range c.Config.HookDirectory {
+			b.Opts = append(b.Opts, "--hook-dir", HookDirectory)
+		}
 	}
 
 	b.Opts = append(b.Opts, c.Config.Suite,

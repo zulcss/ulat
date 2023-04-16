@@ -1,43 +1,46 @@
 #!/bin/bash
 #
 
+tmpfiles_conf=usr/etc/tmpfiles.d/00ostree-tmpfiles.conf
 TARGET=$1
-pushd $TARGET
+cd $TARGET
 
 mkdir -p var/rootdirs
+touch $tmpfiles_conf
+
 dirs="home opt srv mnt media"
 for d in $dirs; do \
-    if [ -d $d ]l then
-        echo "Moving $d to var/rootdirs"
+    if [ -d ${d} ] && [ ! -L ${d} ]; then
         mv $d var/rootdirs
-        echo "Symlinking $d to /$d"
         ln -s var/rootdirs/$d $d
+        echo "d /var/rootdirs/${dir} 0755 root root -" >>${tmpfiles_conf}
     fi
 done
 
-mv usr/local var/rootdirs/usrlocal
-mv root var/rootdirs/roothome
-mv tmp sysroot/tmp
+mkdir -p usr/etc/tmpfiles.d
+echo "d /var/rootdirs 0755 root root -" >>${tmpfiles_conf}
+# disable the annoying logs on the console
+echo "w /proc/sys/kernel/printk - - - - 3" >> ${tmpfiles_conf}
+echo "d /var/home 0755 root root -" >>${tmpfiles_conf}
 
-ln -sr var/rootdirs/usrlocal usr/local
-ln -s var/rootdirs/roothome root
-ln -s sysroot/tmp tmp
+echo "d /var/rootdirs/opt 0755 root root -" >>${tmpfiles_conf}
+if [ -d var/opt ]; then
+    rm -rf var/opt
+    mv opt var/rootdirs/opt
+    ln -s var/rootdirs/opt opt
+fi
 
-if [ -d var/lib/dpkg ]; then
+if [ -d /var/lib/dpkg ]; then
     mv var/lib/dpkg usr/share/dpkg/db
-    ln -sr usr/share/dpkg/db var/lib/dpkg
+    echo "L /var/lib/dpkg - - - - /usr/share/dpkg/db" >>${tmpfiles_conf}
 fi
 
-if [ -d var/lib/apt ]; then
-    mv var/lib/apt usr/share/apt/db
-    ln -sr usr/share/apt/db var/lib/apt
+if [ -d root ] && [ ! L root ]; then
+    echo "d /var/rootdirs/root 0755 root root -" >>${tmpfiles_conf}
+    mv root var/rootdirs
+    ln -sf var/rootdirs/root root
 fi
 
-# Creating boot directories required for "ostree admin deploy"
 mkdir -p boot/loader.0
 mkdir -p boot/loader.1
 ln -sf boot/loader.0 boot/loader
-
-if [ -d /boot/efi ]; then
-    cp -a boot/efi usr/lib/ostree-boot
-fi
