@@ -35,7 +35,7 @@ if [ -d /var/lib/dpkg ]; then
     echo "L /var/lib/dpkg - - - - /usr/share/dpkg/db" >>${tmpfiles_conf}
 fi
 
-if [ -d root ] && [ ! L root ]; then
+if [ -d root ] && [ ! -L root ]; then
     echo "d /var/rootdirs/root 0755 root root -" >>${tmpfiles_conf}
     mv root var/rootdirs
     ln -sf var/rootdirs/root root
