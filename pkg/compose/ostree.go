@@ -6,16 +6,27 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/spf13/viper"
 	"github.com/zulcss/ulat/pkg/utils"
 )
 
 type Ostree struct {
 	RootfsDir string
+
+	// OStree Repo
+	Repo string
+	// Ostree archive type
+	Mode string
+	// Ostree branch name
+	Branch string
 }
 
 func NewOstreeContext(rootfs string) *Ostree {
 	return &Ostree{
 		RootfsDir: rootfs,
+		Repo:      viper.GetString("ostree.repo"),
+		Mode:      viper.GetString("ostree.mode"),
+		Branch:    viper.GetString("ostree.branch"),
 	}
 }
 
@@ -70,7 +81,7 @@ func (o *Ostree) BuildBranch(c *Compose) error {
 	log.Println("Building ostree branch...")
 
 	_, err := utils.SH(
-		fmt.Sprintf("ostree --repo=%s commit --branch=%s %s", c.Config.Repo, c.Config.Branch, o.RootfsDir))
+		fmt.Sprintf("ostree --repo=%s commit --branch=%s %s", o.Repo, o.Branch, o.RootfsDir))
 	if err != nil {
 		return err
 	}

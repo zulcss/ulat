@@ -26,7 +26,7 @@ container-dev:
 	docker run -i -t --privileged --network host \
 		-v $(PWD):/workspace \
 		-v $(PWD)/artifacts:/artifacts \
-		-v /srv:/srv ulat
+		-v $(PWD):/srv ulat
 
 clean:
 	rm -rf bin

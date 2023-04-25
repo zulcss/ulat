@@ -33,12 +33,6 @@ type ComposeConfig struct {
 	CustomizeHook []string
 	// Ensure scripts in directory with filenames starting with "setup", "extract", "essential", or "customize"
 	HookDirectory []string
-	// OStree Repo
-	Repo string
-	// Ostree archive type
-	Mode string
-	// Ostree branch name
-	Branch string
 }
 
 func LoadConfig(c *Compose) ComposeConfig {
@@ -66,11 +60,6 @@ func LoadConfig(c *Compose) ComposeConfig {
 		EssentialHook: viper.GetStringSlice("rootfs.essential-hook"),
 		CustomizeHook: viper.GetStringSlice("rootfs.customize-hook"),
 		HookDirectory: viper.GetStringSlice("rootfs.hook-directory"),
-
-		// Ostree
-		Repo:   viper.GetString("ostree.repo"),
-		Mode:   viper.GetString("ostree.mode"),
-		Branch: viper.GetString("ostree.branch"),
 	}
 	return cfg
 }
