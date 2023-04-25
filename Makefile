@@ -20,11 +20,13 @@ check: default
 	staticcheck -checks all,-ST1000 ./...
 
 container-dev:
-	rm -rf artifacts
-	mkdir -p artifacts
-	git clone https://github.com/zulcss/apt-ostree-config artifacts/config
+	rm -f artifacts
+	ln -s ../apt-ostree-config artifacts
 	docker build -t ulat .
-	docker run -i -t --privileged --network host -v $(PWD):/workspace -v $(PWD)/artifacts:/artifacts ulat
+	docker run -i -t --privileged --network host \
+		-v $(PWD):/workspace \
+		-v $(PWD)/artifacts:/artifacts \
+		-v /srv:/srv ulat
 
 clean:
 	rm -rf bin
